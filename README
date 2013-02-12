@@ -2,3 +2,6 @@ Some simple scripts using Python 4 android
 
 http://code.google.com/p/python-for-android/
 
+1. pumping_android.py - script for checking if pumping water from the Yarra River is restricted/banned today.
+borrows extensively from code in the Linux journal article http://www.linuxjournal.com/article/10940?page=0,2 by Paul Barry
+
