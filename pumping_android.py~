@@ -47,7 +47,6 @@ flow = 'Flow:  ' + flow + ' ML/d'
 avflow = 'Av. Flow:  ' + avflow + ' ML/d'
 
 #output to message box
-#this code borrow extensively from the Linux journal article http://www.linuxjournal.com/article/10940?page=0,2 by Paul Barry
 app.vibrate()
 
 appMsg = "Pumping status today:"
