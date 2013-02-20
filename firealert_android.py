@@ -1,6 +1,15 @@
 import feedparser
 import re
 import math
+import android
+app = android.Android()
+
+appTitle = "Fire Incidents"
+appMsg = "Retreiving incident status"
+
+app.dialogCreateSpinnerProgress(appTitle, appMsg)
+app.dialogShow()
+
 
 #check for proximity to home location using John Cook's code  (haversine function)
 #see http://www.johndcook.com/python_longitude_latitude.html code free to use
@@ -72,24 +81,40 @@ for i in range(1,tot_inc):
 	prox.append(distance_on_unit_sphere(lati[i-1], longi[i-1], -37.703047, 145.284524))
 	
 #calculate the number of proximities less than a threshold
-thresh=80.0
+thresh=35.0
 num_close_inc = len([elem for elem in prox if elem < thresh])
 #get the list indices of the incidents within the threshold distance
 index_close_inc = [index for index,value in enumerate(prox) if value < thresh]
 
-print(str(num_close_inc) + ' Incidents within ' + str(round(thresh, 0)) + 'km') 
+#for android will need code to sound an alert/vibrate if incidents>0, then list incident details in an alter message.
+#can run the script episodically using tasker to provide continual coverage.
+
+app.vibrate()
+appMsg = str(num_close_inc) + ' Incidents within ' + str(round(thresh, 0)) + 'km'
+app.dialogCreateAlert(appMsg)
+app.dialogSetPositiveButtonText('OK')
+app.dialogShow()
+resp = app.dialogGetResponse().result
+app.dialogDismiss()
+k=1
 for j in index_close_inc:
+	msg = 'Incident ' + str(k)
+	k += 1
+	app.dialogCreateAlert(msg)
 	placestring=placename[j].strip()+', '
 	placestring=placestring.title()
 	typstring=typ[j].strip()
 	typstring=typstring.title()
 	statstring=status[j].strip()
-	statsting=statstring.title()
-	print(placestring +  typstring +', Distance ='+str(round(prox[j], 1))+'km, Appliances = ' + str(appliances[j])+', '+ statstring + '\n')
-
-#for android will need code to sound an alert/vibrate if incidents>0, then list incident details in an alter message.
-#can run the script episodically using tasker to provide continual coverage.
-
+	statstring=statstring.title()
+	applstring='Appliances: ' + str(appliances[j])
+	proxstring='Distance: ' + str(round(prox[j], 1)) +'km'
+	app.dialogSetItems([placestring, proxstring, typstring, statstring, applstring])
+	app.dialogSetPositiveButtonText('OK')
+	app.dialogShow()
+	resp = app.dialogGetResponse().result
+	app.dialogDismiss()
+app.makeToast("No more incidents")
 
 
 
