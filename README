@@ -5,3 +5,6 @@ http://code.google.com/p/python-for-android/
 1. pumping_android.py - script for checking if pumping water from the Yarra River is restricted/banned today.
 borrows extensively from code in the Linux journal article http://www.linuxjournal.com/article/10940?page=0,2 by Paul Barry
 
+2. firealert_android.py - script which uses cfa rss feed to find current fire incidents close to home, and report relevant details
+in alter messages. Partly replicates functionality of cfa fireready app.
+
