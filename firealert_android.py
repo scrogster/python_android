@@ -79,10 +79,16 @@ for i in range(1,tot_inc):
 	appliances.append(appl)
 	#compute distance from each incident to home location
 	prox.append(distance_on_unit_sphere(lati[i-1], longi[i-1], -37.703047, 145.284524))
-	
+
 #calculate the number of proximities less than a threshold
 thresh=35.0
 num_close_inc = len([elem for elem in prox if elem < thresh])
+
+#alternative approach make list of lists, and transpose using zip()
+#outmat=[lati, longi, placename, typ, status, appliances, prox]	
+#outmat=zip(*outmat)	#transposing columns and rows
+#outmat=sorted(outmat, key=lambda outmat: outmat[7]) #sorting by proximity (ascending)
+
 #get the list indices of the incidents within the threshold distance
 index_close_inc = [index for index,value in enumerate(prox) if value < thresh]
 
