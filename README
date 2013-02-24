@@ -6,5 +6,5 @@ http://code.google.com/p/python-for-android/
 borrows extensively from code in the Linux journal article http://www.linuxjournal.com/article/10940?page=0,2 by Paul Barry
 
 2. firealert_android.py - script which uses cfa rss feed to find current fire incidents close to home, and report relevant details
-in alter messages. Partly replicates functionality of cfa fireready app.
+in alert messages. Partly replicates functionality of cfa fireready app, but in a low-bandwidth, minimalist format.
 
