@@ -4,12 +4,6 @@ import math
 import android
 app = android.Android()
 
-appTitle = "Fire Incidents"
-appMsg = "Retreiving incident status"
-
-app.dialogCreateSpinnerProgress(appTitle, appMsg)
-app.dialogShow()
-
 #function to check for proximity to home location using John Cook's code  (haversine function)
 #see http://www.johndcook.com/python_longitude_latitude.html code free to use
 def distance_on_unit_sphere(lat1, long1, lat2, long2):
@@ -40,6 +34,12 @@ def distance_on_unit_sphere(lat1, long1, lat2, long2):
     # Remember to multiply arc by the radius of the earth 
     # in your favorite set of units to get length.
     return arc
+
+appTitle = "Fire Incidents"
+appMsg = "Retreiving incident status"
+
+app.dialogCreateSpinnerProgress(appTitle, appMsg)
+app.dialogShow()
 
 #download the rss feed
 cfa=feedparser.parse('http://osom.cfa.vic.gov.au/public/osom/IN_COMING.rss')
@@ -87,13 +87,12 @@ outmat=[lati, longi, placename, typ, status, appliances, prox]
 outmat=map(list, zip(*outmat))	#transposing columns and rows
 outmat=sorted(outmat, key=lambda outmat: outmat[6]) #sorting by proximity (ascending)
 
-#cull to only include incidents within thresh distance
+#cull outmat to only include incidents within the threshold distance
 maxind= num_close_inc-1
 outmat=outmat[0:maxind]
 
-
 for j in range(0, maxind):
-	msg = 'Incident ' + str(j+1)
+	msg = 'Incident ' + str(j+1) + ' of ' +str(num_close_inc)
 	app.dialogCreateAlert(msg)
 	placestring=outmat[j][2].strip()+', '
 	placestring=placestring.title()
@@ -108,40 +107,4 @@ for j in range(0, maxind):
 	app.dialogShow()
 	resp = app.dialogGetResponse().result
 	app.dialogDismiss()
-
-#get the list indices of the incidents within the threshold distance
-#index_close_inc = [index for index,value in enumerate(prox) if value < thresh]
-
-#for android will need code to sound an alert/vibrate if incidents>0, then list incident details in an alter message.
-#can run the script episodically using tasker to provide continual coverage.
-
-#app.vibrate()
-#appMsg = str(num_close_inc) + ' Incidents within ' + str(round(thresh, 0)) + 'km'
-#app.dialogCreateAlert(appMsg)
-#app.dialogSetPositiveButtonText('OK')
-#app.dialogShow()
-#resp = app.dialogGetResponse().result
-#app.dialogDismiss()
-
-#k=1
-#for j in index_close_inc:
-#	msg = 'Incident ' + str(k)
-#	k += 1
-#	app.dialogCreateAlert(msg)
-#	placestring=placename[j].strip()+', '
-#	placestring=placestring.title()
-#	typstring=typ[j].strip()
-#	typstring=typstring.title()
-#	statstring=status[j].strip()
-#	statstring=statstring.title()
-#	applstring='Appliances: ' + str(appliances[j])
-#	proxstring='Distance: ' + str(round(prox[j], 1)) +'km'
-#	app.dialogSetItems([placestring, proxstring, typstring, statstring, applstring])
-#	app.dialogSetPositiveButtonText('OK')
-#	app.dialogShow()
-#	resp = app.dialogGetResponse().result
-#	app.dialogDismiss()
-#app.makeToast("No more incidents")
-
-
-
+app.makeToast("No more incidents")
