@@ -76,22 +76,22 @@ for i in range(1,tot_inc):
 	appl=int(appl.strip())
 	appliances.append(appl)
 	#compute distance from each incident to home location
-	prox.append(distance_on_unit_sphere(lati[i-1], longi[i-1], -37.703047, 145.284524))
+	prox.append(distance_on_unit_sphere(lati[i-1], longi[i-1], -37.700617, 145.285479))
 
 #calculate the number of proximities less than a threshold
 thresh=35.0
-num_close_inc = len([elem for elem in prox if elem < thresh])
-
+num_close_inc = len([elem for elem in prox if elem <= thresh])
 #store output data in a list of lists for ease of sorting and filtering.
 outmat=[lati, longi, placename, typ, status, appliances, prox]	
 outmat=map(list, zip(*outmat))	#transposing columns and rows
 outmat=sorted(outmat, key=lambda outmat: outmat[6]) #sorting by proximity (ascending)
 
 #cull outmat to only include incidents within the threshold distance
-maxind= num_close_inc-1
-outmat=outmat[0:maxind]
+#maxind= num_close_inc-1
+#outmat=outmat[0:num_close_inc]
 
-for j in range(0, maxind):
+app.vibrate()
+for j in range(0, tot_inc-1):
 	msg = 'Incident ' + str(j+1) + ' of ' +str(num_close_inc)
 	app.dialogCreateAlert(msg)
 	placestring=outmat[j][2].strip()+', '
@@ -102,9 +102,13 @@ for j in range(0, maxind):
 	statstring=statstring.title()
 	applstring='Appliances: ' + str(outmat[j][5])
 	proxstring='Distance: ' + str(round(outmat[j][6], 1)) +'km'
-	app.dialogSetItems([placestring, proxstring, typstring, statstring, applstring])
-	app.dialogSetPositiveButtonText('OK')
-	app.dialogShow()
-	resp = app.dialogGetResponse().result
-	app.dialogDismiss()
+	if outmat[j][6]<thresh:
+		#print(placestring+ proxstring+ typstring+ statstring+ applstring)
+		#app.ttsSpeak(placestring) #speaks the locations (annoying)
+		app.dialogSetItems([placestring, proxstring, typstring, statstring, applstring])
+		app.dialogSetPositiveButtonText('OK')
+		app.dialogShow()
+		resp = app.dialogGetResponse().result
+		app.dialogDismiss()
+app.vibrate()
 app.makeToast("No more incidents")
