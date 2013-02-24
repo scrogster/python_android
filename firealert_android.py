@@ -10,10 +10,8 @@ appMsg = "Retreiving incident status"
 app.dialogCreateSpinnerProgress(appTitle, appMsg)
 app.dialogShow()
 
-
-#check for proximity to home location using John Cook's code  (haversine function)
+#function to check for proximity to home location using John Cook's code  (haversine function)
 #see http://www.johndcook.com/python_longitude_latitude.html code free to use
-
 def distance_on_unit_sphere(lat1, long1, lat2, long2):
 
     # Convert latitude and longitude to 
@@ -49,7 +47,7 @@ cfa=feedparser.parse('http://osom.cfa.vic.gov.au/public/osom/IN_COMING.rss')
 #calculate the total number of incidents
 tot_inc=len(cfa['entries'])
 
-#set up some lists to store incident attribute data
+#set up some lists to store incident attribute data in
 lati=[]
 longi=[]
 placename=[]
@@ -84,43 +82,66 @@ for i in range(1,tot_inc):
 thresh=35.0
 num_close_inc = len([elem for elem in prox if elem < thresh])
 
-#alternative approach make list of lists, and transpose using zip()
-#outmat=[lati, longi, placename, typ, status, appliances, prox]	
-#outmat=zip(*outmat)	#transposing columns and rows
-#outmat=sorted(outmat, key=lambda outmat: outmat[7]) #sorting by proximity (ascending)
+#store output data in a list of lists for ease of sorting and filtering.
+outmat=[lati, longi, placename, typ, status, appliances, prox]	
+outmat=map(list, zip(*outmat))	#transposing columns and rows
+outmat=sorted(outmat, key=lambda outmat: outmat[6]) #sorting by proximity (ascending)
 
-#get the list indices of the incidents within the threshold distance
-index_close_inc = [index for index,value in enumerate(prox) if value < thresh]
+#cull to only include incidents within thresh distance
+maxind= num_close_inc-1
+outmat=outmat[0:maxind]
 
-#for android will need code to sound an alert/vibrate if incidents>0, then list incident details in an alter message.
-#can run the script episodically using tasker to provide continual coverage.
 
-app.vibrate()
-appMsg = str(num_close_inc) + ' Incidents within ' + str(round(thresh, 0)) + 'km'
-app.dialogCreateAlert(appMsg)
-app.dialogSetPositiveButtonText('OK')
-app.dialogShow()
-resp = app.dialogGetResponse().result
-app.dialogDismiss()
-k=1
-for j in index_close_inc:
-	msg = 'Incident ' + str(k)
-	k += 1
+for j in range(0, maxind):
+	msg = 'Incident ' + str(j+1)
 	app.dialogCreateAlert(msg)
-	placestring=placename[j].strip()+', '
+	placestring=outmat[j][2].strip()+', '
 	placestring=placestring.title()
-	typstring=typ[j].strip()
+	typstring=outmat[j][3].strip()
 	typstring=typstring.title()
-	statstring=status[j].strip()
+	statstring=outmat[j][4].strip()
 	statstring=statstring.title()
-	applstring='Appliances: ' + str(appliances[j])
-	proxstring='Distance: ' + str(round(prox[j], 1)) +'km'
+	applstring='Appliances: ' + str(outmat[j][5])
+	proxstring='Distance: ' + str(round(outmat[j][6], 1)) +'km'
 	app.dialogSetItems([placestring, proxstring, typstring, statstring, applstring])
 	app.dialogSetPositiveButtonText('OK')
 	app.dialogShow()
 	resp = app.dialogGetResponse().result
 	app.dialogDismiss()
-app.makeToast("No more incidents")
+
+#get the list indices of the incidents within the threshold distance
+#index_close_inc = [index for index,value in enumerate(prox) if value < thresh]
+
+#for android will need code to sound an alert/vibrate if incidents>0, then list incident details in an alter message.
+#can run the script episodically using tasker to provide continual coverage.
+
+#app.vibrate()
+#appMsg = str(num_close_inc) + ' Incidents within ' + str(round(thresh, 0)) + 'km'
+#app.dialogCreateAlert(appMsg)
+#app.dialogSetPositiveButtonText('OK')
+#app.dialogShow()
+#resp = app.dialogGetResponse().result
+#app.dialogDismiss()
+
+#k=1
+#for j in index_close_inc:
+#	msg = 'Incident ' + str(k)
+#	k += 1
+#	app.dialogCreateAlert(msg)
+#	placestring=placename[j].strip()+', '
+#	placestring=placestring.title()
+#	typstring=typ[j].strip()
+#	typstring=typstring.title()
+#	statstring=status[j].strip()
+#	statstring=statstring.title()
+#	applstring='Appliances: ' + str(appliances[j])
+#	proxstring='Distance: ' + str(round(prox[j], 1)) +'km'
+#	app.dialogSetItems([placestring, proxstring, typstring, statstring, applstring])
+#	app.dialogSetPositiveButtonText('OK')
+#	app.dialogShow()
+#	resp = app.dialogGetResponse().result
+#	app.dialogDismiss()
+#app.makeToast("No more incidents")
 
 
 
