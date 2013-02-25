@@ -2,9 +2,12 @@ import feedparser
 import re
 import math
 import android
-app = android.Android()
+import socket
 
-#function to check for proximity to home location using John Cook's code  (haversine function)
+app = android.Android()
+socket.setdefaulttimeout(50.0)
+
+#function to check for proximity to home location using John Cook's code (haversine function)
 #see http://www.johndcook.com/python_longitude_latitude.html code free to use
 def distance_on_unit_sphere(lat1, long1, lat2, long2):
 
@@ -86,12 +89,9 @@ outmat=[lati, longi, placename, typ, status, appliances, prox]
 outmat=map(list, zip(*outmat))	#transposing columns and rows
 outmat=sorted(outmat, key=lambda outmat: outmat[6]) #sorting by proximity (ascending)
 
-#cull outmat to only include incidents within the threshold distance
-#maxind= num_close_inc-1
-#outmat=outmat[0:num_close_inc]
-
 app.vibrate()
-for j in range(0, tot_inc-1):
+j=0
+while j < num_close_inc:
 	msg = 'Incident ' + str(j+1) + ' of ' +str(num_close_inc)
 	app.dialogCreateAlert(msg)
 	placestring=outmat[j][2].strip()+', '
@@ -102,13 +102,13 @@ for j in range(0, tot_inc-1):
 	statstring=statstring.title()
 	applstring='Appliances: ' + str(outmat[j][5])
 	proxstring='Distance: ' + str(round(outmat[j][6], 1)) +'km'
-	if outmat[j][6]<thresh:
-		#print(placestring+ proxstring+ typstring+ statstring+ applstring)
-		#app.ttsSpeak(placestring) #speaks the locations (annoying)
-		app.dialogSetItems([placestring, proxstring, typstring, statstring, applstring])
-		app.dialogSetPositiveButtonText('OK')
-		app.dialogShow()
-		resp = app.dialogGetResponse().result
-		app.dialogDismiss()
+	#print(placestring+ proxstring+ typstring+ statstring+ applstring)
+	#app.ttsSpeak(placestring) #speaks the locations (annoying)
+	app.dialogSetItems([placestring, proxstring, typstring, statstring, applstring])
+	app.dialogSetPositiveButtonText('OK')
+	app.dialogShow()
+	resp = app.dialogGetResponse().result
+	app.dialogDismiss()
+	j= j+1
 app.vibrate()
 app.makeToast("No more incidents")
