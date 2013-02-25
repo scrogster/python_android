@@ -5,7 +5,7 @@ import android
 import socket
 
 app = android.Android()
-socket.setdefaulttimeout(50.0)
+socket.setdefaulttimeout(60.0)
 
 #function to check for proximity to home location using John Cook's code (haversine function)
 #see http://www.johndcook.com/python_longitude_latitude.html code free to use
