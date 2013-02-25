@@ -6,5 +6,8 @@ http://code.google.com/p/python-for-android/
 borrows extensively from code in the Linux journal article http://www.linuxjournal.com/article/10940?page=0,2 by Paul Barry
 
 2. firealert_android.py - script which uses cfa rss feed to find current fire incidents close to home, and report relevant details
-in alert messages. Partly replicates functionality of cfa fireready app, but in a low-bandwidth, minimalist format.
+in android alert messages. The location of "Home" in this context is the Christmas Hills South Fire Station - code can easily be modified 
+to reflect distances from any other desired location.Partly replicates functionality of the CFA fireready app, but in a low-bandwidth, 
+minimalist format. Use at your own risk, no guarantee it will work for your required purpose.
+
 
