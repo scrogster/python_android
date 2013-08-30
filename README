@@ -2,12 +2,12 @@ Some simple scripts using Python 4 android
 
 http://code.google.com/p/python-for-android/
 
-1. pumping_android.py - script for checking if pumping water from the Yarra River is restricted/banned today.
-borrows extensively from code in the Linux journal article http://www.linuxjournal.com/article/10940?page=0,2 by Paul Barry
+1. pumping_android.py - script for checking if pumping water from the Yarra River is restricted/banned today. Borrows extensively from code in the Linux journal article http://www.linuxjournal.com/article/10940?page=0,2 by Paul Barry.
 
-2. firealert_android.py - script which uses cfa rss feed to find current fire incidents close to home, and report relevant details
-in android alert messages. The location of "Home" in this context is the Christmas Hills South Fire Station - code can easily be modified 
-to reflect distances from any other desired location.Partly replicates functionality of the CFA fireready app, but in a low-bandwidth, 
-minimalist format. Use at your own risk, no guarantee it will work for your required purpose.
+2. firealert_android.py - script which uses cfa rss feed to find current fire incidents close to home, and report relevant details in android alert messages. The location of "Home" in this context is the Christmas Hills South Fire Station - code could be easily be modified to reflect distances from any other desired location. Partly replicates functionality of the CFA fireready app, but in a low-bandwidth, minimalist format. Use at your own risk, no guarantee it will work for your required purpose.
+
+3. radio_save.py - ordinary python script to capture a few minutes of ABC Radio National streaming audio to a file called abc.mp3. I use the script to "time shift" the morning news, so I can wake up to a news bulletin, even if not waking on the hour. I just use the abc.mp3 file as the alarm sound in an android alarm clock app.
+
+4. modem_reboot.py - ordinary python script to telnet into my TP-Link TD-W8960N modem/router and initiate a reboot. Handy when my ADSL connection drops out.
 
 
