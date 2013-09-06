@@ -8,6 +8,7 @@
 #use the resulting mp3 as an alarm clock ringtone
 #in the event of download failure, you'll just get yesterdays news.
 import urllib
+import sys
 
 #file to save to
 target = open('/mnt/ext_card/music/abc.mp3', "wb")
@@ -17,16 +18,22 @@ try:
 	#approx number of minutes desired
 	mins=10
 	#chunk size to write to file
-	chunksize=1024*16
+	chunksize=1024*100
 	#number of chunks to write to get approximately correct recording duration
 	#approximate 630 kB per minute of audio
 	chunks=int(mins*650000/chunksize)
 	#keep buffering and writing the stream intermittently until the required number of seconds has elapsed.
 	#writes in 8kB chunks (could easily be changed depending on CPUspeed/RAM availability).
+	sys.stdout.write("[%s]" % (" " * chunks))
+	sys.stdout.flush()
+	sys.stdout.write("\b" * (chunks+1)) 
 	for i in range(1, chunks):
 		target.write(conn.read(chunksize))
-	conn.close()	
-except
+		sys.stdout.write("-")
+		sys.stdout.flush()
+	sys.stdout.write("\n")
+	conn.close()
+except:
 	conn.close()
 
 
