@@ -14,7 +14,11 @@ import sys
 target = open('/mnt/ext_card/music/abc.mp3', "wb")
 try:
 	#RADIO NATIONAL streaming url
-	conn = urllib.urlopen('http://shoutmedia.abc.net.au:10420/')
+	conn = urllib.urlopen('http://shoutmedia.abc.net.au:10320/')
+	#NEWS RADIO streaming url
+	#conn = urllib.urlopen('http://shoutmedia.abc.net.au:10424/')
+	#774 MELBOURNE streaming url
+	#conn = urllib.urlopen('http://shoutmedia.abc.net.au:10450/')
 	#approx number of minutes desired
 	mins=10
 	#chunk size to write to file
