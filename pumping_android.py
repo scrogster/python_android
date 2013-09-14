@@ -22,7 +22,6 @@ br = mechanize.Browser()
 data = br.open(BASE_URL).get_data()
 soup = BeautifulSoup(data)
 table=soup.find("table",id="ctl00_m_g_a76a034b_68d1_4fca_8b53_c7d6e0cc6fc5_ctl00_grdDivertersSummary" )
-#print(table)
 rows = table.findAll('tr')
 dat=str(rows[1])
 
@@ -38,7 +37,7 @@ flow=a[14]
 avflow=a[16]
 dddate=a[18]
 
-##apply the stripper function to current restriction and ban statuses, and format strings
+
 restrict = 'Restricted?  ' + restrict
 ban = 'Banned?  ' + ban
 risk = 'Risk?    ' + risk
@@ -53,7 +52,6 @@ print(avflow)
 
 ##output to message box
 ##this code borrow extensively from the Linux journal article http://www.linuxjournal.com/article/10940?page=0,2 by Paul Barry
-#app.vibrate()
 
 appMsg = "Pumping status today:"
 app.dialogCreateAlert(appMsg)
