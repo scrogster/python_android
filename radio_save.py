@@ -11,8 +11,8 @@ import urllib
 import sys
 
 #file to save to
-#target = open('/mnt/ext_card/music/abc.mp3', "wb")
-target = open('/mnt/sdcard/Music/abc.mp3', "wb")
+target = open('/mnt/ext_card/music/abc.mp3', "wb")
+#target = open('/mnt/sdcard/Music/abc.mp3', "wb")
 try:
 	#RADIO NATIONAL streaming url
 	conn = urllib.urlopen('http://shoutmedia.abc.net.au:10420/')
