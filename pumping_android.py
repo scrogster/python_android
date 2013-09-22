@@ -16,14 +16,18 @@ appMsg = "Retreiving pumping status"
 
 app.dialogCreateSpinnerProgress(appTitle, appMsg)
 app.dialogShow()
-            
-BASE_URL = "http://www.melbournewater.com.au/waterdata/waterwaydiversionstatus/Pages/Yarra-River-Upper.aspx"
-br = mechanize.Browser()
-data = br.open(BASE_URL).get_data()
-soup = BeautifulSoup(data)
-table=soup.find("table",id="ctl00_m_g_a76a034b_68d1_4fca_8b53_c7d6e0cc6fc5_ctl00_grdDivertersSummary" )
-rows = table.findAll('tr')
-dat=str(rows[1])
+
+try:            
+	BASE_URL = "http://www.melbournewater.com.au/waterdata/waterwaydiversionstatus/Pages/Yarra-River-Upper.aspx"
+	br = mechanize.Browser()
+	data = br.open(BASE_URL).get_data()
+	soup = BeautifulSoup(data)
+	table=soup.find("table",id="ctl00_m_g_a76a034b_68d1_4fca_8b53_c7d6e0cc6fc5_ctl00_grdDivertersSummary" )	
+	rows = table.findAll('tr')
+	dat=str(rows[1])
+except:
+	app.makeToast("Unable to retrieve data")
+	die("Unable to retrieve data")
 
 def remove_html_tags(data):
 	p = re.compile(r'<.*?>')
